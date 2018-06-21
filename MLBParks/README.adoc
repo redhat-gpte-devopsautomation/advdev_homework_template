@@ -1,0 +1,42 @@
+= MLBParks backend application
+
+This application is a JEE backend that provides geolocation information about MLBParks. The information is stored in a MongoDB.
+
+== Building the application
+
+The application can be built using Maven:
+
+[source,bash]
+----
+mvn -s ../nexus_settings.xml clean package -DskipTests=true
+----
+
+This will create a jar file target/mlbparks.jar that can be used in a binary build for OpenShift. The S2I Builder image to use is `jboss-eap70-openshift:1.7`.
+
+== Deploying the Application
+
+The application needs a MongoDB database to store its data. This can be a shared MongoDB database for the entire project since the application stores the data in its own collection `mlbparks`.
+
+MLBParks expects the MongoDB connection information in the following environment variables:
+
+* DB_HOST=mongodb (Name of the MongoDB Service)
+* DB_PORT=27017 (Port the MongoDB Service is running under)
+* DB_USERNAME=mongodb (Username for the MongoDB database)
+* DB_PASSWORD=mongodb (Password for the user)
+* DB_NAME=parks (Database Name)
+* DB_REPLICASET=rs0 (Name of the Replicaset if MongoDB is deployed as a Stateful Service. Not set for standalone database)
+
+MLBParks also expects an environment variable  (which can be set in the Config Map as well if desired) to set the displayed name of the backend. It is *mandatory* for this variable to be set for the automatic grading to succeed.
+
+Valid values are:
+
+* APPNAME="MLB Parks (Green)"
+* APPNAME="MLB Parks (Blue)"
+
+The exposed service to the application needs a label `type=parksmap-backend` for the frontend to dynamically discover the service.
+
+There is an endpoint `/ws/healthz/` that returns `OK` when the application is running (trailing "/" is important).
+
+The endpoint `/ws/info/` returns some basic information about the service.
+
+The endpoint `/ws/data/load/` creates the data in the MongoDB database and will need to be called (preferably with a post-deployment-hook) once the Pod is running.

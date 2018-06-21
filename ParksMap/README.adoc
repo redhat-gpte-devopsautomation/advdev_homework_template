@@ -1,0 +1,47 @@
+= Parksmap application
+
+This Spring Boot application is a frontend web gateway to backend services that provide geolocation data on services
+
+== Building the application
+
+The application can be built using Maven:
+
+[source,bash]
+----
+mvn -s ../nexus_settings.xml clean package spring-boot:repackage -DskipTests -Dcom.redhat.xpaas.repo.redhatga
+----
+
+This will create a jar file target/parksmap.jar that can be used in a binary build for OpenShift. The S2I Builder image to use is `redhat-openjdk18-openshift:1.2`.
+
+== Deploying the Application
+
+The application needs permission to dynamically discover the available routes (with label `type=parksmap-backend`) in the project.
+
+[source,bash]
+----
+oc policy add-role-to-user view --serviceaccount=default
+----
+
+There is an endpoint `/ws/healthz` that returns `OK` when the application is running.
+
+=== List backend
+
+You can list the backends that the application discovered:
+
+[source,bash]
+----
+curl -i http://<parksmap_route>/ws/backends/list
+----
+
+=== Return Application Name
+
+The application reads an environment variable *APPNAME* which will need to be set to either "ParksMap (Blue)" or "ParksMap (Green)". The grading application checks for these exact strings. The trailing "/" after the "/ws/appname/" is important!
+
+[source,bash]
+----
+curl -i http://<parksmap_route>/ws/appname/
+----
+
+== Hints on Blue/Green Deployments
+
+The application dynamically discovers services with label "parksmap-backend". When executing a Blue/Green deployment on a backend service it is necessary to switch the labels of the backend services. Since the ParksMap application only updates its cache on creation of services the backend Blue/Green deployment will have to delete the old service (e.g. mlbparks-green)  and then create a new service with the correct label.
