@@ -17,8 +17,10 @@ podTemplate(
     echo "CLUSTER: ${CLUSTER}"
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
-
-    
+    // You need to build the application in directory `MLBParks`.
+    // Also copy "../nexus_settings.xml" to your build directory
+    // and replace 'GUID' in the file with your ${GUID} to point to >your< Nexus instance
+ 
   }
 }
 
