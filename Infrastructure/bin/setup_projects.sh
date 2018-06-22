@@ -8,7 +8,7 @@ fi
 
 GUID=$1
 USER=$2
-echo "Creaeting all Homework Projects for GUID=${GUID} and USER=${USER}"
+echo "Creating all Homework Projects for GUID=${GUID} and USER=${USER}"
 oc new-project ${GUID}-nexus        --display-name="${GUID} AdvDev Homework Nexus"
 oc new-project ${GUID}-sonarqube    --display-name="${GUID} AdvDev Homework Sonarqube"
 oc new-project ${GUID}-jenkins    --display-name="${GUID} AdvDev Homework Jenkins"
