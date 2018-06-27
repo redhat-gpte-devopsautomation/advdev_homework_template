@@ -20,3 +20,9 @@ oc policy add-role-to-user admin ${USER} -n ${GUID}-sonarqube
 oc policy add-role-to-user admin ${USER} -n ${GUID}-jenkins
 oc policy add-role-to-user admin ${USER} -n ${GUID}-parks-dev
 oc policy add-role-to-user admin ${USER} -n ${GUID}-parks-prod
+
+oc annotate namespace ${GUID}-nexus      openshift.io/requester=${USER} --overwrite
+oc annotate namespace ${GUID}-sonarqube  openshift.io/requester=${USER} --overwrite
+oc annotate namespace ${GUID}-jenkins    openshift.io/requester=${USER} --overwrite
+oc annotate namespace ${GUID}-parks-dev  openshift.io/requester=${USER} --overwrite
+oc annotate namespace ${GUID}-parks-prod openshift.io/requester=${USER} --overwrite
