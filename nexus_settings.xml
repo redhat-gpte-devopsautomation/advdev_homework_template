@@ -4,7 +4,7 @@
     <mirror>
       <id>Nexus</id>
       <name>Nexus Public Mirror</name>
-      <url>http://nexus3.GUID-nexus.svc.cluster.local:8081/repository/maven-all-public/</url>
+      <url>http://nexus3.gpte-hw-cicd.svc.cluster.local:8081/repository/maven-all-public/</url>
       <mirrorOf>*</mirrorOf>
     </mirror>
   </mirrors>
@@ -12,7 +12,7 @@
     <server>
       <id>nexus</id>
       <username>admin</username>
-      <password>admin123</password>
+      <password>redhat</password>
     </server>
   </servers>
 </settings>

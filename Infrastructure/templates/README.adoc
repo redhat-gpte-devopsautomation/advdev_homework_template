@@ -1,3 +1,0 @@
-== Templates Folder
-
-Any OpenShift template files (Nexus, Sonarqube, ParksMap, etc.) should go into this directory. The setup scripts in ../bin can then call these templates to set up the infrastructure.
