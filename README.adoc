@@ -1,3 +1,8 @@
+= OpenShift Advanced Development Homework Template
+
+[NOTE]
+If you are looking for the 40h homework (Parksmap etc.) please checkout branch `40h`.
+
 == Tasks Demo Application
 
 This is an example JEE application to be used in the Advanced OpenShift Development Homework Assignment. Read these instructions carefully to successfully complete the homework assignment.
