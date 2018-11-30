@@ -24,9 +24,11 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # Make sure that Jenkins is fully up and running before proceeding!
 while : ; do
   echo "Checking if Jenkins is Ready..."
-  AVAILABLE_REPLICAS=$(oc get dc jenkins -o yaml -n ${GUID}-jenkins|grep availableReplicas|awk -c '{print $2}')
-  echo "Available Replicas: $AVAILABLE_REPLICAS"
-  [[ "$AVAILABLE_REPLICAS" == "1" ]] || break
+  AVAILABLE_REPLICAS=$(oc get dc jenkins -n ${GUID}-jenkins -o=jsonpath='{.status.availableReplicas}')
+  if [[ "$AVAILABLE_REPLICAS" == "1" ]]; then
+    echo "...Yes. Jenkins is ready."
+    break
+  fi
   echo "...no. Sleeping 10 seconds."
   sleep 10
 done
