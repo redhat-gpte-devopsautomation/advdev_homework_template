@@ -51,7 +51,6 @@ podTemplate(
 
       // TBD: The next two stages should run in parallel
       stage("Test and Code Analysis"){
-        failFast true
         parallel {
           stage('Unit Tests') {
             echo "Running Unit Tests"
