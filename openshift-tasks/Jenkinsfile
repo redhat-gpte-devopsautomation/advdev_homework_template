@@ -50,22 +50,35 @@ podTemplate(
       }
 
       // TBD: The next two stages should run in parallel
-
-      // Using Maven run the unit tests
-      stage('Unit Tests') {
-        echo "Running Unit Tests"
-
-        // TBD: Execute Unit Tests
-        sh "${mvnCmd} clean test"
+      stage("Test and Code Analysis"){
+        steps {
+          parallel(
+            unittest: {
+              echo "Running Unit Tests"
+              sh "${mvnCmd} clean test"
+            },
+            codeanalysis: {
+              echo "Running Code Analysis"
+              sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
+            }
+          )
+        }
       }
+      //// Using Maven run the unit tests
+      //stage('Unit Tests') {
+      //  echo "Running Unit Tests"
 
-      // Using Maven to call SonarQube for Code Analysis
-      stage('Code Analysis') {
-        echo "Running Code Analysis"
+      //  // TBD: Execute Unit Tests
+      //  sh "${mvnCmd} clean test"
+      //}
 
-        // TBD: Execute Sonarqube Tests
-        sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
-      }
+      //// Using Maven to call SonarQube for Code Analysis
+      //stage('Code Analysis') {
+      //  echo "Running Code Analysis"
+
+      //  // TBD: Execute Sonarqube Tests
+      //  sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
+      //}
 
       // Publish the built war file to Nexus
       stage('Publish to Nexus') {
