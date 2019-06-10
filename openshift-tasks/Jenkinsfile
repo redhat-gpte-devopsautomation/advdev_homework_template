@@ -51,17 +51,16 @@ podTemplate(
 
       // TBD: The next two stages should run in parallel
       stage("Test and Code Analysis"){
-        steps {
-          parallel(
-            unittest: {
-              echo "Running Unit Tests"
-              sh "${mvnCmd} clean test"
-            },
-            codeanalysis: {
-              echo "Running Code Analysis"
-              sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
-            }
-          )
+        failFast true
+        parallel {
+          stage('Unit Tests') {
+            echo "Running Unit Tests"
+            sh "${mvnCmd} clean test"
+          }
+          stage('Code Analysis') {
+            echo "Running Code Analysis"
+            sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
+          }
         }
       }
       //// Using Maven run the unit tests
