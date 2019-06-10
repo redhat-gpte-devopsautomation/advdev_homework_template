@@ -37,13 +37,16 @@ podTemplate(
       // Set the tag for the production image: version
       def prodTag = ""
 
+      def sonarqubeUrl = "http://sonarqube-gpte-hw-cicd.apps.na311.openshift.opentlc.com"
+      def nexusUrl = "http://nexus3-gpte-hw-cicd.apps.na311.openshift.opentlc.com"
+
       // Using Maven build the war file
       // Do not run tests in this step
       stage('Build war') {
         echo "Building version ${devTag}"
 
         // TBD: Execute Maven Build
-        sh "mvn clean package -DskipTests"
+        sh "${mvnCmd} clean package -DskipTests"
       }
 
       // TBD: The next two stages should run in parallel
@@ -53,6 +56,7 @@ podTemplate(
         echo "Running Unit Tests"
 
         // TBD: Execute Unit Tests
+        sh "${mvnCmd} clean test"
       }
 
       // Using Maven to call SonarQube for Code Analysis
@@ -60,6 +64,7 @@ podTemplate(
         echo "Running Code Analysis"
 
         // TBD: Execute Sonarqube Tests
+        sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
       }
 
       // Publish the built war file to Nexus
@@ -67,6 +72,7 @@ podTemplate(
         echo "Publish to Nexus"
 
         // TBD: Publish to Nexus
+        sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::${nexusUrl}/repository/releases"
       }
 
       // Build the OpenShift Image in OpenShift and tag it.
