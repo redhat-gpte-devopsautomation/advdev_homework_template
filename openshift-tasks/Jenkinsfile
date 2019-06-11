@@ -58,7 +58,7 @@ podTemplate(
             echo "Running Unit Tests"
             sh "${mvnCmd} clean test"
           }
-        }
+        },
         'Code Analysis': {
           steps {
             echo "Running Code Analysis"
