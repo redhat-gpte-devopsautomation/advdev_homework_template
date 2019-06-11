@@ -52,7 +52,7 @@ podTemplate(
       }
 
       // TBD: The next two stages should run in parallel
-      parallel {
+      parallel (
         'Unit Tests': {
           steps {
             echo "Running Unit Tests"
@@ -65,7 +65,7 @@ podTemplate(
             sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonarqubeUrl} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
           }
         }
-      }
+      )
       // Using Maven run the unit tests
       //stage('Unit Tests') {
       //  echo "Running Unit Tests"
