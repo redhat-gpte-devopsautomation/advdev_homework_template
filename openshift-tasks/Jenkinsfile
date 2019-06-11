@@ -33,9 +33,9 @@ podTemplate(
       def version = getVersionFromPom("pom.xml")
 
       // TBD Set the tag for the development image: version + build number
-      def devTag  = ""
+      def devTag  = "${version}" + currentBuild.number
       // Set the tag for the production image: version
-      def prodTag = ""
+      def prodTag = "${version}"
 
       def devProject = "${GUID}-tasks-dev"
       def prodProject = "${GUID}-tasks-prod"
@@ -48,6 +48,7 @@ podTemplate(
         echo "Building version ${devTag}"
 
         // TBD: Execute Maven Build
+        sh "${mvnCmd} clean package -DskipTests"
       }
 
       //// TBD: The next two stages should run in parallel
