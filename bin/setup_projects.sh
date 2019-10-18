@@ -8,8 +8,8 @@ if [ "$#" -ne 3 ]; then
     exit 1
 fi
 
-GUID=$1
-USER=$2
+GUID=8fa5
+USER=raju.komakula-wipro.com
 FROM_JENKINS=$3
 
 echo "Creating Homework Projects for GUID=${GUID} and USER=${USER}"
