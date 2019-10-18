@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-GUID=$1
+GUID=8fa5
 echo "Setting up Tasks Production Environment in project ${GUID}-tasks-prod"
 
 # Set up Production Project
